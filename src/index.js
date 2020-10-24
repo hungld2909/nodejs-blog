@@ -5,6 +5,14 @@ const handlebars = require('express-handlebars');
 const app = express();
 const port = 3000;
 app.use(express.static(path.join(__dirname,'public')));
+ const route = require('./routes');
+
+
+app.use(express.urlencoded({
+  extended:true
+})); //middwere
+app.use(express.json()); //middwere
+//XMLHttpRequest, fetch, axios
 
 //!HTTP logger
 app.use(morgan('combined'))
@@ -16,10 +24,12 @@ app.engine('hbs', handlebars({
 app.set('view engine', 'hbs'); // định nghĩa handlebar bằng với handlebars function này.
 app.set('views', path.join(__dirname, 'resources', 'views'));
 // console.log('Path: ', path.join(__dirname, 'resources', 'views'));
-//! nó được định nghĩa là Route (hiểu cách khách là tuyến đường là dấu / ).
-app.get('/', (req, res) => {
-  res.render('home')
-})
+
+
+// Route init
+route(app);
+
+
 
 
 app.listen(port, () => {
